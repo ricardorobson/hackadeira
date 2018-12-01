@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A layout example that shows off a blog page with a list of posts.">
+    <title>PlantControl</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="css/layouts/blog-old-ie.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="css/layouts/blog.css">
+        <!--<![endif]-->
+
+    <script type="text/javascript">
+        var dataToChart = [
+                ['Medição', 'Solo', 'Ar'],
+                ['1',  1000,      400],
+                ['2',  1170,      460],
+                ['3',  660,       1120],
+                ['4',  1030,      540]
+        ];
+
+// append new value to the array
+//dataToChart.push("Hola");
+    function refreshChart(){
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable(dataToChart);
+
+        var options = {
+            title: 'Humidade',
+            hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+            vAxis: {minValue: 0}
+        };
+
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+      }
+
+        //setTimeout(refreshChart, 2000);
+    }
+
+
+    refreshChart(); // execute function
+      
+
+
+
+
+
+
+
+      var connection = new WebSocket('ws://localhost:8080');
+        
+        connection.onopen = function(){
+            console.log('Connection open!');
+            connection.send('I am the client. Hi!');
+        }
+        
+        connection.onclose = function(){
+            console.log('Connection closed!');
+        }
+        
+        connection.onmessage = function(e){
+            var serverMessage = e.data;
+            var servermessageArray=serverMessage.split(":");
+            var serverMessageType = servermessageArray[0];
+            var serverMessageContent = servermessageArray[1];
+
+            switch(serverMessageType){
+                case 'light':
+                    dataToChart.push([dataToChart.length,  serverMessageContent,      serverMessageContent+100]);
+                    refreshChart();
+                    break;
+                default:
+                    //alert("fail");
+            }
+        }
+
+        function sendMessage(message){
+            connection.send(message);
+        }
+    </script>
+</head>
+<body>
+
+
+
+
+
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+        <div class="header">
+            <h2 class="brand-title">PlantControl</h2>
+            <h3 class="brand-tagline">Monitore e controle sua planta!</h3>
+
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a class="pure-button" href="http://purecss.io">Habilitar água</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="pure-button" href="http://yuilibrary.com">Habilitar luz</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Pinned Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="Tilo Mitra&#x27;s avatar" class="post-avatar" src="img/common/suculenta.jpg">
+
+                        <h2 class="post-title">Monitoramento em tempo real</h2>
+
+                    </header>
+
+                    <div class="post-description">
+                        <div id="chart_div" style="width: 100%; height: 500px;"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>
