@@ -8,7 +8,7 @@ GPIO.setup(channel,GPIO.IN)
 
 def callback(channel):
 	if GPIO.input(channel):
-		print("agua não detectada")
+		print("agua nao detectada")
 	else:
 		print("agua detectada")
 
