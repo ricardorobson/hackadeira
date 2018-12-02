@@ -4,7 +4,11 @@ from time import sleep
 
 action = sys.argv[1]
 
+pwm = None
+
 def init_engine():
+	global pwm
+
 	GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(11,GPIO.OUT)
 	pwm=GPIO.PWM(11,50)
@@ -25,5 +29,6 @@ if action == 1: # open
 elif action == 0: # close
 	move_engine(0)
 
-pwm.stop()
+if pwm:
+	pwm.stop()
 GPIO.cleanup()
