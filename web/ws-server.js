@@ -1,3 +1,6 @@
+var motorStatus = 0;
+var manualMode = false;
+
 var WebSocketServer = require('ws').Server;
 wss = new WebSocketServer({port: 8080, path: '/'});
 wss.on('connection', function(ws) {
@@ -9,6 +12,13 @@ wss.on('connection', function(ws) {
 			case "closeMotor":
 				execute('python ../motor.py 0')
 				break;
+			case "getMode":
+				ws.send('mode:'+manualMode);
+				break;
+			case "alterMode":
+				manualMode=!manualMode;
+				ws.send('mode:'+manualMode);
+				break;
 			default:
 				console.log("Option not found")
 				break;
@@ -16,6 +26,7 @@ wss.on('connection', function(ws) {
 		
 	});
 	ws.send('Msg from server');
+	ws.send('mode:'+manualMode);
 
 
 	function execute(command) {
@@ -52,10 +63,12 @@ MQTT SERVER
 				ws.send("temp:"+message);
 				break;
 			case 'hackadeira/sensors/humSoil':
-				if(message=='0'){
-					execute('python ../motor.py 1')
-				}else{
-					execute('python ../motor.py 0')
+				if(message != motorStatus+'' && !manualMode){
+					if(message=='0'){
+						execute('python ../motor.py 1')
+					}else{
+						execute('python ../motor.py 0')
+					}
 				}
 				ws.send("humSoil:"+message);
 				break;
@@ -63,10 +76,12 @@ MQTT SERVER
 				ws.send("humEnv:"+message);
 				break;
 			case 'hackadeira/sensors/light':
-				if(parseInt(message)<10000){
-					execute('python ../motor.py 1')
-				}else{
-					execute('python ../motor.py 0')
+				if(message != motorStatus+'' && !manualMode){
+					if(parseInt(message)<10000){
+						execute('python ../motor.py 1')
+					}else{
+						execute('python ../motor.py 0')
+					}
 				}
 				ws.send("light:"+message);
 				break;
