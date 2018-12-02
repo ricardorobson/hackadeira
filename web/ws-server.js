@@ -34,10 +34,6 @@ wss.on('connection', function(ws) {
 		
 	});
 	ws.send('Msg from server');
-<<<<<<< HEAD
-	
-=======
->>>>>>> 1965f1c4973d55c0b67ecc702da0f5897ad1c7d2
 
 
 	function execute(command) {
