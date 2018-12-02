@@ -70,13 +70,7 @@ MQTT SERVER
 				ws.send("temp:"+message);
 				break;
 			case 'hackadeira/sensors/humSoil':
-				if(message != motorStatus+'' && !manualMode){
-					if(message=='0'){
-						execute('python ../motor.py 1')
-					}else{
-						execute('python ../motor.py 0')
-					}
-				}
+				
 				ws.send("humSoil:"+message);
 				break;
 			case 'hackadeira/sensors/humEnv':
@@ -85,9 +79,9 @@ MQTT SERVER
 			case 'hackadeira/sensors/light':
 				if(message != motorStatus+'' && !manualMode){
 					if(message<10000){
-						execute('python ../motor.py 1')
-					}else{
 						execute('python ../motor.py 0')
+					}else{
+						execute('python ../motor.py 1')
 					}
 				}
 				ws.send("light:"+message);
