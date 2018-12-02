@@ -13,7 +13,7 @@ wss.on('connection', function(ws) {
 				break;
 			case "closeMotor":
 				if(manualMode){
-					execute('python ../motor.py 0';
+					execute('python ../motor.py 0');
 				}
 				break;
 			case "getMode":
@@ -30,7 +30,7 @@ wss.on('connection', function(ws) {
 		
 	});
 	ws.send('Msg from server');
-	ws.send('mode:'+manualMode);
+	
 
 
 	function execute(command) {

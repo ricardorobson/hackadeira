@@ -137,6 +137,9 @@
         connection.onopen = function(){
             console.log('Connection open!');
             connection.send('I am the client. Hi!');
+
+            connection.send('getMode');
+        
         }
         
         connection.onclose = function(){
