@@ -14,6 +14,12 @@ def init_engine():
 	pwm=GPIO.PWM(11,50)
 	pwm.start(0)
 
+def stop_engine():
+	global pwm
+	if pwm:
+		pwm.stop()
+	GPIO.cleanup()
+
 def move_engine(angle):
 	duty = angle / 18 + 2
 	GPIO.output(11, True)
@@ -24,11 +30,9 @@ def move_engine(angle):
 
 init_engine()
 
-if action == 1: # open
+if action == '1': # open
 	move_engine(140)
-elif action == 0: # close
+elif action == '0': # close
 	move_engine(0)
 
-if pwm:
-	pwm.stop()
-GPIO.cleanup()
+stop_engine()
