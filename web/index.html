@@ -167,8 +167,8 @@
                 case 'light':
                     dataToChartLight.push([dataToChartLight.length,  serverMessageContent]);
                     refreshChartLight();
+                    break;
                 case 'mode':
-                    console.log("AQUI:"+serverMessageContent);
                     if(serverMessageContent=='true'){
                         document.getElementById('modeBtn').text="Ir para o modo automático";
                     }else{
@@ -176,12 +176,20 @@
                     }
                     
                     refreshChartLight();
+                    break;
             }
         }
 
         function sendMessage(message){
             connection.send(message);
         }
+
+        setInterval(getMode, 1000);
+
+        function getMode(){
+            sendMessage("getMode");
+        }
+
     </script>
 </head>
 <body>

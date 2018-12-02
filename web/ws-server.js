@@ -84,7 +84,7 @@ MQTT SERVER
 				break;
 			case 'hackadeira/sensors/light':
 				if(message != motorStatus+'' && !manualMode){
-					if(parseInt(message)<10000){
+					if(message<10000){
 						execute('python ../motor.py 1')
 					}else{
 						execute('python ../motor.py 0')
