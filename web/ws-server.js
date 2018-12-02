@@ -3,25 +3,30 @@ wss = new WebSocketServer({port: 8080, path: '/'});
 wss.on('connection', function(ws) {
 	ws.on('message', function(message) {
 		switch(message){
-			case "openLight":
-				console.log(message);
+			case "openMotor":
+				execute('python ../motor.py 1')
 				break;
-			case "closeLight":
-				console.log(message)
-				break;
-			case "openWater":
-				console.log(message)
-				break;
-			case "closeWater":
-				console.log(message)
+			case "closeMotor":
+				execute('python ../motor.py 0')
 				break;
 			default:
 				console.log("Option not found")
 				break;
 		}
+		
 	});
-	console.log('new connection');
 	ws.send('Msg from server');
+
+
+	function execute(command) {
+	  const exec = require('child_process').exec
+
+	  exec(command, (err, stdout, stderr) => {
+	    process.stdout.write(stdout)
+	  })
+	}
+
+	
 
 /*
 
@@ -41,6 +46,7 @@ MQTT SERVER
 
 
 	clientMqtt.on('message', (topic, message) => {
+		console.log(topic+'\t'+message)
 		switch(topic){
 			case 'hackadeira/sensors/temp':
 				ws.send("temp:"+message);
@@ -55,10 +61,5 @@ MQTT SERVER
 				ws.send("light:"+message);
 				break;
 		}
-	})
-
-
-	clientMqtt.on('message', () => {
-		console.log('message')
 	})
 });
