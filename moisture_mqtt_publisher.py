@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 import time
 
 #GPIO PORT
-channel = 21
+channel = 18
 
 URL_BROKER = "broker.hivemq.com"
 
