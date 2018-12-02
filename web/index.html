@@ -165,7 +165,8 @@
                     dataToChartLight.push([dataToChartLight.length,  serverMessageContent]);
                     refreshChartLight();
                 case 'mode':
-                    if(serverMessageContent){
+                    console.log(serverMessageContent);
+                    if(serverMessageContent=='true'){
                         document.getElementById('modeBtn').text="Ir para o modo automático";
                     }else{
                         document.getElementById('modeBtn').text="Ir para o modo  manual";

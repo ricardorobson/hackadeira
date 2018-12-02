@@ -7,10 +7,14 @@ wss.on('connection', function(ws) {
 	ws.on('message', function(message) {
 		switch(message){
 			case "openMotor":
-				execute('python ../motor.py 1')
+				if(manualMode){
+					execute('python ../motor.py 1');
+				}
 				break;
 			case "closeMotor":
-				execute('python ../motor.py 0')
+				if(manualMode){
+					execute('python ../motor.py 0';
+				}
 				break;
 			case "getMode":
 				ws.send('mode:'+manualMode);
