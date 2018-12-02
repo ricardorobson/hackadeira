@@ -33,7 +33,8 @@ MQTT SERVER
 
 	clientMqtt.on('connect', () => {
 		clientMqtt.subscribe('hackadeira/sensors/temp');
-		clientMqtt.subscribe('hackadeira/sensors/hum');
+		clientMqtt.subscribe('hackadeira/sensors/humSoil');
+		clientMqtt.subscribe('hackadeira/sensors/humEnv');
 		clientMqtt.subscribe('hackadeira/sensors/light');
 	})
 
@@ -44,8 +45,11 @@ MQTT SERVER
 			case 'hackadeira/sensors/temp':
 				ws.send("temp:"+message);
 				break;
-			case 'hackadeira/sensors/hum':
-				ws.send("hum:"+message);
+			case 'hackadeira/sensors/humSoil':
+				ws.send("humSoil:"+message);
+				break;
+			case 'hackadeira/sensors/humEnv':
+				ws.send("humEnv:"+message);
 				break;
 			case 'hackadeira/sensors/light':
 				ws.send("light:"+message);

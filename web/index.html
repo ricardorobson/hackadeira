@@ -22,34 +22,62 @@
         <!--<![endif]-->
 
     <script type="text/javascript">
-        var dataToChartHum = [
-                ['Medição', 'Solo', 'Ar'],
-                ['1',0,0]
+        var dataToChartHumSoil = [
+                ['Medição', 'Solo'],
+                ['1',0]
         ];
 
-        function refreshChartHum(){
+        function refreshChartHumSoil(){
             google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChartHum);
+            google.charts.setOnLoadCallback(drawChartHumSoil);
 
-            function drawChartHum() {
-                var data = google.visualization.arrayToDataTable(dataToChartHum);
+            function drawChartHumSoil() {
+                var data = google.visualization.arrayToDataTable(dataToChartHumSoil);
 
             var options = {
-                title: 'Humidade',
+                title: 'Humidade do solo',
                 hAxis: {title: 'It',  titleTextStyle: {color: '#333'}},
                 vAxis: {minValue: 0}
             };
 
-                var chartHum = new google.visualization.AreaChart(document.getElementById('chartHum'));
-                chartHum.draw(data, options);
+                var chartHumSoil = new google.visualization.AreaChart(document.getElementById('chartHumSoil'));
+                chartHumSoil.draw(data, options);
           }
         }
 
-        refreshChartHum();
+        refreshChartHumSoil();
+
+
+
+
+        var dataToChartHumEnv = [
+                ['Medição', 'Ambiente'],
+                ['1',0]
+        ];
+
+        function refreshChartHumEnv(){
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChartHumEnv);
+
+            function drawChartHumEnv() {
+                var data = google.visualization.arrayToDataTable(dataToChartHumEnv);
+
+            var options = {
+                title: 'Humidade do ambiente',
+                hAxis: {title: 'It',  titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0}
+            };
+
+                var chartHumEnv = new google.visualization.AreaChart(document.getElementById('chartHumEnv'));
+                chartHumEnv.draw(data, options);
+          }
+        }
+
+        refreshChartHumEnv();
         
 
         var dataToChartTemp = [
-                ['Medição', 'Solo'],
+                ['Medição', 'Ambiente'],
                 ['1',0]
         ];
 
@@ -121,12 +149,13 @@
             var serverMessageType = servermessageArray[0];
             var serverMessageContent = servermessageArray[1];
             switch(serverMessageType){
-                case 'hum':
-                    var valueHumArray = serverMessageContent.split('~');
-                    var value1 = valueHumArray[0];
-                    var value2 = valueHumArray[1];
-                    dataToChartHum.push([dataToChartHum.length,  value1, value2]);
-                    refreshChartHum();
+                case 'humSoil':
+                    dataToChartHumSoil.push([dataToChartHumSoil.length,  serverMessageContent]);
+                    refreshChartHumSoil();
+                    break;
+                case 'humEnv':
+                    dataToChartHumEnv.push([dataToChartHumEnv.length,  serverMessageContent]);
+                    refreshChartHumEnv();
                     break;
                 case 'temp':
                     dataToChartTemp.push([dataToChartTemp.length,  serverMessageContent]);
@@ -186,7 +215,9 @@
                     </header>
 
                     <div class="post-description">
-                        <div id="chartHum" style="width: 100%; height: 350px;"></div>
+                        <div id="chartHumSoil" style="width: 100%; height: 350px;"></div>
+                        <hr/>
+                        <div id="chartHumEnv" style="width: 100%; height: 350px;"></div>
                         <hr/>
                         <div id="chartTemp" style="width: 100%; height: 350px;"></div>
                         <hr/>

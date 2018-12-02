@@ -12,7 +12,8 @@ clientMqtt.on('message', () => {
 function sendData()
 {	
 	clientMqtt.publish('hackadeira/sensors/temp',''+randomInt(100,200));
-	clientMqtt.publish('hackadeira/sensors/hum',''+randomInt(100,200)+'~'+randomInt(100,200));
+	clientMqtt.publish('hackadeira/sensors/humSoil',''+randomInt(100,200));
+	clientMqtt.publish('hackadeira/sensors/humEnv',''+randomInt(100,200));
 	clientMqtt.publish('hackadeira/sensors/light',''+randomInt(100,200));
 }
 
