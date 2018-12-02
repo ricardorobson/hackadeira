@@ -22,44 +22,114 @@
         <!--<![endif]-->
 
     <script type="text/javascript">
-        var dataToChart = [
-                ['Medição', 'Solo', 'Ar'],
-                ['1',  1000,      400],
-                ['2',  1170,      460],
-                ['3',  660,       1120],
-                ['4',  1030,      540]
+        var dataToChartHumSoil = [
+                ['Medição', 'Solo'],
+                ['1',0]
         ];
 
-// append new value to the array
-//dataToChart.push("Hola");
-    function refreshChart(){
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+        function refreshChartHumSoil(){
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChartHumSoil);
 
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable(dataToChart);
+            function drawChartHumSoil() {
+                var data = google.visualization.arrayToDataTable(dataToChartHumSoil);
 
-        var options = {
-            title: 'Humidade',
-            hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-            vAxis: {minValue: 0}
-        };
+            var options = {
+                title: 'Humidade do solo',
+                hAxis: {title: 'It',  titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0}
+            };
 
-            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-      }
+                var chartHumSoil = new google.visualization.AreaChart(document.getElementById('chartHumSoil'));
+                chartHumSoil.draw(data, options);
+          }
+        }
 
-        //setTimeout(refreshChart, 2000);
-    }
-
-
-    refreshChart(); // execute function
-      
+        refreshChartHumSoil();
 
 
 
 
+        var dataToChartHumEnv = [
+                ['Medição', 'Ambiente'],
+                ['1',0]
+        ];
 
+        function refreshChartHumEnv(){
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChartHumEnv);
+
+            function drawChartHumEnv() {
+                var data = google.visualization.arrayToDataTable(dataToChartHumEnv);
+
+            var options = {
+                title: 'Humidade do ambiente',
+                hAxis: {title: 'It',  titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0}
+            };
+
+                var chartHumEnv = new google.visualization.AreaChart(document.getElementById('chartHumEnv'));
+                chartHumEnv.draw(data, options);
+          }
+        }
+
+        refreshChartHumEnv();
+        
+
+        var dataToChartTemp = [
+                ['Medição', 'Ambiente'],
+                ['1',0]
+        ];
+
+        function refreshChartTemp(){
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChartTemp);
+
+            function drawChartTemp() {
+                var data = google.visualization.arrayToDataTable(dataToChartTemp);
+
+            var options = {
+                title: 'Temperatura',
+                hAxis: {title: 'It',  titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0}
+            };
+
+                var chartTemp = new google.visualization.AreaChart(document.getElementById('chartTemp'));
+                chartTemp.draw(data, options);
+          }
+        }
+
+
+        refreshChartTemp();
+          
+
+
+
+          var dataToChartLight = [
+                ['Medição', 'Ambiente'],
+                ['1',0]
+        ];
+
+        function refreshChartLight(){
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChartLight);
+
+            function drawChartLight() {
+                var data = google.visualization.arrayToDataTable(dataToChartLight);
+
+            var options = {
+                title: 'Luz',
+                hAxis: {title: 'It',  titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0}
+            };
+
+                var chartLight = new google.visualization.AreaChart(document.getElementById('chartLight'));
+                chartLight.draw(data, options);
+          }
+        }
+
+
+        refreshChartLight();
 
 
       var connection = new WebSocket('ws://localhost:8080');
@@ -78,14 +148,22 @@
             var servermessageArray=serverMessage.split(":");
             var serverMessageType = servermessageArray[0];
             var serverMessageContent = servermessageArray[1];
-
             switch(serverMessageType){
-                case 'light':
-                    dataToChart.push([dataToChart.length,  serverMessageContent,      serverMessageContent+100]);
-                    refreshChart();
+                case 'humSoil':
+                    dataToChartHumSoil.push([dataToChartHumSoil.length,  serverMessageContent]);
+                    refreshChartHumSoil();
                     break;
-                default:
-                    //alert("fail");
+                case 'humEnv':
+                    dataToChartHumEnv.push([dataToChartHumEnv.length,  serverMessageContent]);
+                    refreshChartHumEnv();
+                    break;
+                case 'temp':
+                    dataToChartTemp.push([dataToChartTemp.length,  serverMessageContent]);
+                    refreshChartTemp();
+                    break;
+                case 'light':
+                    dataToChartLight.push([dataToChartLight.length,  serverMessageContent]);
+                    refreshChartLight();
             }
         }
 
@@ -125,7 +203,7 @@
         <div>
             <!-- A wrapper for all the blog posts -->
             <div class="posts">
-                <h1 class="content-subhead">Pinned Post</h1>
+                <h1 class="content-subhead">Dashboard</h1>
 
                 <!-- A single blog post -->
                 <section class="post">
@@ -137,7 +215,13 @@
                     </header>
 
                     <div class="post-description">
-                        <div id="chart_div" style="width: 100%; height: 500px;"></div>
+                        <div id="chartHumSoil" style="width: 100%; height: 350px;"></div>
+                        <hr/>
+                        <div id="chartHumEnv" style="width: 100%; height: 350px;"></div>
+                        <hr/>
+                        <div id="chartTemp" style="width: 100%; height: 350px;"></div>
+                        <hr/>
+                        <div id="chartLight" style="width: 100%; height: 350px;"></div>
                     </div>
                 </section>
             </div>

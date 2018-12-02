@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 import time
 
 #GPIO PORT
-channel = 21
+channel = 18
 
 URL_BROKER = "broker.hivemq.com"
 
@@ -12,10 +12,10 @@ GPIO.setup(channel,GPIO.IN)
 
 def callback(channel):
 	if GPIO.input(channel):
-		publish.single("iot/moisture_status", "0", hostname=URL_BROKER)
+		publish.single("hackadeira/sensors/humSoil", "0", hostname=URL_BROKER)
 		print("agua nao detectada")
 	else:
-		publish.single("iot/moisture_status", "1", hostname=URL_BROKER)
+		publish.single("hackadeira/sensors/humSoil", "1", hostname=URL_BROKER)
 		print("agua detectada")
 
 GPIO.add_event_detect(channel, GPIO.BOTH, bouncetime=300)
