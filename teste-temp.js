@@ -1,7 +1,7 @@
 var sensorLib = require('node-dht-sensor');
 
 //22 é o tipo do sensor e 12 é o pino GPIO
-sensorLib.initialize(22, 12);
+sensorLib.initialize(11, 12);
 
 var interval = setInterval(function () {
     read();

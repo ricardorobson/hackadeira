@@ -16,6 +16,7 @@ client.on('message', () => {
 function read() {
 	console.log('publishing')
     var readout = sensorLib.read();
+    console.log(readout.temperature.toFixed(2));
     client.publish('hackadeira/sensors/temp', readout.temperature.toFixed(2));
     client.publish('hackadeira/sensors/humEnv', readout.humidity.toFixed(2));
 };
