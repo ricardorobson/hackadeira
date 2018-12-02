@@ -21,7 +21,11 @@ wss.on('connection', function(ws) {
 				break;
 			case "alterMode":
 				manualMode=!manualMode;
-				ws.send('mode:'+manualMode);
+				if(manualMode){
+					ws.send('mode:true');
+				}else{
+					ws.send('mode:false');
+				}
 				break;
 			default:
 				console.log("Option not found")
@@ -30,7 +34,10 @@ wss.on('connection', function(ws) {
 		
 	});
 	ws.send('Msg from server');
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 1965f1c4973d55c0b67ecc702da0f5897ad1c7d2
 
 
 	function execute(command) {
