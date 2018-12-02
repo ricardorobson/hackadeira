@@ -23,16 +23,38 @@ wss.on('connection', function(ws) {
 	console.log('new connection');
 	ws.send('Msg from server');
 
-	
-	function refreshData()
-	{
-	    ws.send("light:1");  // 5 Seconds
+/*
 
-	    // Do your thing here
+MQTT SERVER
 
-	    setTimeout(refreshData, 1000);
-	}
+*/
+	const mqtt = require('mqtt')
+	const clientMqtt = mqtt.connect('mqtt://broker.hivemq.com')
+
+	clientMqtt.on('connect', () => {
+		clientMqtt.subscribe('hackadeira/sensors/temp');
+		clientMqtt.subscribe('hackadeira/sensors/hum');
+		clientMqtt.subscribe('hackadeira/sensors/light');
+	})
 
 
-	refreshData(); // execute function
+
+	clientMqtt.on('message', (topic, message) => {
+		switch(topic){
+			case 'hackadeira/sensors/temp':
+				ws.send("temp:"+message);
+				break;
+			case 'hackadeira/sensors/hum':
+				ws.send("hum:"+message);
+				break;
+			case 'hackadeira/sensors/light':
+				ws.send("light:"+message);
+				break;
+		}
+	})
+
+
+	clientMqtt.on('message', () => {
+		console.log('message')
+	})
 });
